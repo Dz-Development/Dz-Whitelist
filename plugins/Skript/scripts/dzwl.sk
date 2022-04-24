@@ -1,54 +1,101 @@
+
+    
+on skript start:
+    send "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Has started! All resources from us at: https://github.com/Dz-Development"
 on load:
     if file "plugins/Dz-Whitelist/settings.yml" doesn't exist:
         wait 3 ticks
         create file "plugins/Dz-Whitelist/settings.yml"
-        wait 3 ticks
-        set yml value "permissionmessage" from file "plugins/Dz-Whitelist/settings.yml" to "notset"
-        set yml value "permission" from file "plugins/Dz-Whitelist/settings.yml" to "notset"
     wait 1 seconds
-    set {noperms} to skutil yaml value "permissionmessage" from file "plugins/Dz-Whitelist/settings.yml"
+    set {enabled} to skutil yaml value "enabled" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
     set {permission} to skutil yaml value "permission" from file "plugins/Dz-Whitelist/settings.yml"
-command /test:
+    wait 1 ticks
+    set {reload} to skutil yaml value "Messages.Reload" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {noperms} to skutil yaml value "Messages.Permission-message" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {toggleon} to skutil yaml value "Messages.toggle-on" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {toggleoff} to skutil yaml value "Messages.toggle-off" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {pladd} to skutil yaml value "Messages.Player-added" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {alreadyin} to skutil yaml value "Messages.Player-already-saved" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {plremove} to skutil yaml value "Messages.Player-removed" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {notsave} to skutil yaml value "Messages.Player-not-saved" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {nowl} to skutil yaml value "Messages.Not-whitelisted" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {alrenabled} to skutil yaml value "Messages.Already-enabled" from file "plugins/Dz-Whitelist/settings.yml"
+    wait 1 ticks
+    set {alrdisabled} to skutil yaml value "Messages.Already-disabled" from file "plugins/Dz-Whitelist/settings.yml"
+command /dzwl [<text>] [<text>]:
     trigger:
-        send {permission} to all players
-
-command /wl [<text>] [<text>]:
-    permission: whitelist.admin
-    permission message: %{noperms}%
-    trigger:
-        
-        # sets
-        set {wllist::*} to skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
-        # list
-        if arg-1 contains "list":
-            send "%{wllist::*} ? "Empty" %"
-        # toggle on
-        if arg-1 contains "on":
-            send "on" to player
-        # toggle off
-        if arg-1 contains "off":
-            send "off" to player
-        # add player
-        if arg-1 contains "add":
-            if {wllist::*} contains arg-2:
-                send "already in "
-            else if {wllist::*} does not contain arg-2:
-                add arg-2 to skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
-                wait 1 ticks
-                send "added pl "
-                reload script "dzwl.sk"
+        if player does not have permission {permission}:
+            send formatted {noperms}
+            stop
+        else:
+            # sets
+            set {wllist::*} to skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
+            # list
+            if arg-1 contains "list":
+                send "%{wllist::*} ? "Empty" %"
+            # toggle on
+            if arg-1 contains "enable":
+                if skutil yaml value "enabled" from file "plugins/Dz-Whitelist/settings.yml" is "true":
+                    send formatted {alrenabled}
+                else:
+                    wait 1 ticks
+                    set skutil yaml value "enabled" from file "plugins/Dz-Whitelist/settings.yml" to "true"
+                    send formatted {toggleon}
+            # toggle off
+            if arg-1 contains "disable":
+                if skutil yaml value "enabled" from file "plugins/Dz-Whitelist/settings.yml" is "false":
+                    send formatted {alrdisabled}
+                else:
+                    wait 1 ticks
+                    set skutil yaml value "enabled" from file "plugins/Dz-Whitelist/settings.yml" to "false"
+                    send formatted {toggleoff}
+            # add player
+            if arg-1 contains "add":
+                if {wllist::*} contains arg-2:
+                    send {alreadyin}
+                else if {wllist::*} does not contain arg-2:
+                    add arg-2 to skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
+                    wait 1 ticks
+                    send formatted {pladd}
+                    reload script "dzwl.sk"
                 
-        # remove player
-        if arg-1 contains "remove":
-            if {wllist::*} does not contain arg-2:
-                send "player isnt there"
-            else if {wllist::*} contains arg-2:
-                remove arg-2 from skutil yaml list "list" from file "plugins/DZ-Whitelist/settings.yml"
+            # remove player
+            if arg-1 contains "remove":
+                if {wllist::*} does not contain arg-2:
+                    send {notsave}
+                else if {wllist::*} contains arg-2:
+                    remove arg-2 from skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
+                    wait 1 ticks
+                    send formatted {plremove}
+                    reload script "dzwl.sk"
+            # reload
+            if arg-1 contains "reload":
                 wait 1 ticks
-                send "removed pl"
-                reload script "dzwl.sk"
-
-
+                reload script "wl.sk"
+                send formatted {reload}
+            if arg-1 contains "help":
+                send "&7&l&n_______&7&l[&2&lDZ&f&lWL&7&l]&7&l&n_______"
+                send "&8&l» &7&o/dzwl help &7&l=&7 Brings this menu"
+                send "&8&l» &7&o/dzwl reload &7&l=&7 Reloads the skript"
+                send "&8&l» &7&o/dzwl enable &7&l=&7 Enables the Whitelist"
+                send "&8&l» &7&o/dzwl disable &7&l=&7 Disables the Whitelist"
+                send "&8&l» &7&o/dzwl add <player> &7&l=&7 Adds player to Whitelist"
+                send "&8&l» &7&o/dzwl remove <player> &7&l=&7 Removes player from Whitelist"
+                send "&7&l&n_________________"
+#
 on connect:
-    if {wllist::*} does not contain player:
-        kick player due to "not on wl"
+    broadcast {enabled}
+    if {enabled} contains "true":
+        set {wllist::*} to skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
+        if {wllist::*} does not contain player:
+            kick player due to {nowl}
