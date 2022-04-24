@@ -1,3 +1,45 @@
-permissionmessage: no permission
+# ENABLED
+enabled: 'false'
+
+# Permission
 permission: whitelist.admin
+
+# Messages
+Messages:
+  # Message when player doesnt have permission
+  Permission-message: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 You dont have permission to use this command!"
+
+  # Reload message
+  Reload: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Whitelist has been reloaded!"
+  
+  # Message when whitelist is enabled
+  toggle-on: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Whitelist has been enabled!"
+
+  # Message when whitelist is already enabled
+  Already-enabled: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Whitelist is already enabled!"
+
+  # Message when whitelist is disabled
+  toggle-off: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Whitelist has been disabled!"
+
+  # Message when whitelist is already disabled
+  Already-disabled: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Whitelist is already disabled!"
+
+  # Message when player was added to whitelist
+  Player-added: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Added %arg-2% to whitelist"
+
+  # Message when player is already whitelisted
+  Player-already-saved: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 Player is already whitelisted!"
+
+  # Message when player has been remvoed from whitelist
+  Player-removed: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 %arg-2% has been removed from whitelist!"
+
+  # Message when player is not in whitelist
+  Player-not-saved: "&7&l[&2&lDZ&f&lWL&7&l] &8&l»&r&7 %arg-2% was not found in whitelist!"
+
+
+  # Message when player isnt whitelisted
+  Not-whitelisted: You are not whitelisted!
+
+# Whitelist list
 list:
+- ItzDepstrCZ
