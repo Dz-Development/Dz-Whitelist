@@ -1,13 +1,13 @@
 on load:
-    if file "plugins/DZ-Whitelist/settings.yml" doesn't exist:
+    if file "plugins/Dz-Whitelist/settings.yml" doesn't exist:
         wait 3 ticks
-        create file "plugins/DZ-Whitelist/settings.yml"
+        create file "plugins/Dz-Whitelist/settings.yml"
         wait 3 ticks
-        set yml value "permissionmessage" from file "plugins/DZ-Whitelist/settings.yml" to "notset"
-        set yml value "permission" from file "plugins/DZ-Whitelist/settings.yml" to "notset"
+        set yml value "permissionmessage" from file "plugins/Dz-Whitelist/settings.yml" to "notset"
+        set yml value "permission" from file "plugins/Dz-Whitelist/settings.yml" to "notset"
     wait 1 seconds
-    set {noperms} to skutil yaml value "permissionmessage" from file "plugins/DZ-Whitelist/settings.yml"
-    set {permission} to skutil yaml value "permission" from file "plugins/DZ-Whitelist/settings.yml"
+    set {noperms} to skutil yaml value "permissionmessage" from file "plugins/Dz-Whitelist/settings.yml"
+    set {permission} to skutil yaml value "permission" from file "plugins/Dz-Whitelist/settings.yml"
 command /test:
     trigger:
         send {permission} to all players
@@ -18,7 +18,7 @@ command /wl [<text>] [<text>]:
     trigger:
         
         # sets
-        set {wllist::*} to skutil yaml list "list" from file "plugins/DZ-Whitelist/settings.yml"
+        set {wllist::*} to skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
         # list
         if arg-1 contains "list":
             send "%{wllist::*} ? "Empty" %"
@@ -33,10 +33,10 @@ command /wl [<text>] [<text>]:
             if {wllist::*} contains arg-2:
                 send "already in "
             else if {wllist::*} does not contain arg-2:
-                add arg-2 to skutil yaml list "list" from file "plugins/DZ-Whitelist/settings.yml"
+                add arg-2 to skutil yaml list "list" from file "plugins/Dz-Whitelist/settings.yml"
                 wait 1 ticks
                 send "added pl "
-                reload script "wl.sk"
+                reload script "dzwl.sk"
                 
         # remove player
         if arg-1 contains "remove":
@@ -46,7 +46,7 @@ command /wl [<text>] [<text>]:
                 remove arg-2 from skutil yaml list "list" from file "plugins/DZ-Whitelist/settings.yml"
                 wait 1 ticks
                 send "removed pl"
-                reload script "wl.sk"
+                reload script "dzwl.sk"
 
 
 on connect:
